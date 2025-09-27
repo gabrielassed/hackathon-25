@@ -6,3 +6,6 @@
 #Database
 /database
 
+#python cache file
+**/__pycache__
+.pytest_cache
