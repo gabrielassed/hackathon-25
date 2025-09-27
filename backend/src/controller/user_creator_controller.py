@@ -37,7 +37,7 @@ class UserCreatorController:
         cpf = (user_info.get("cpf") or "").strip()
         email = (user_info.get("email") or "").strip().lower()
         username = (user_info.get("username") or "").strip()
-        password_hash = (user_info.get("password_hash") or "").strip()
+        password_hash = (user_info.get("password") or "").strip()
         role = (user_info.get("role") or "").strip().lower()
 
         crm_number = (user_info.get("crm_number") or "").strip()

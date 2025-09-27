@@ -20,4 +20,13 @@ def chat():
 
     return jsonify({"answer": chat_response})
 
+@chat_bp.route('/file', methods=['POST'])
+def file_upload():
+    if 'file' not in request.files:
+        return jsonify({"error": "Nenhum arquivo enviado na requisição"}), 400
+    file = request.files
+
+    if file.filename == '':
+        return jsonify({"error": "Nenhum arquivo selecionado"}), 400
+
 
