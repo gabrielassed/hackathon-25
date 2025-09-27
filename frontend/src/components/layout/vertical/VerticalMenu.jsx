@@ -46,8 +46,6 @@ const VerticalMenu = ({ scrollMenu }) => {
             onScrollY: container => scrollMenu(container, true)
           })}
     >
-      {/* Incase you also want to scroll NavHeader to scroll with Vertical Menu, remove NavHeader from above and paste it below this comment */}
-      {/* Vertical Menu */}
       <Menu
         popoutMenuOffset={{ mainAxis: 27 }}
         menuItemStyles={menuItemStyles(verticalNavOptions, theme)}
@@ -55,22 +53,10 @@ const VerticalMenu = ({ scrollMenu }) => {
         renderExpandedMenuItemIcon={{ icon: <i className='bx-bxs-circle' /> }}
         menuSectionStyles={menuSectionStyles(verticalNavOptions, theme)}
       >
-        <MenuItem href='/home' icon={<i className='bx-home' />}>
-          Home
-        </MenuItem>
-        <MenuItem href='/about' icon={<i className='bx-info-circle' />}>
-          About
+        <MenuItem href='/aura' icon={<i className='bx-chat' />}>
+          Aura
         </MenuItem>
       </Menu>
-      {/* <Menu
-          popoutMenuOffset={{ mainAxis: 27 }}
-          menuItemStyles={menuItemStyles(verticalNavOptions, theme)}
-          renderExpandIcon={({ open }) => <RenderExpandIcon open={open} transitionDuration={transitionDuration} />}
-          renderExpandedMenuItemIcon={{ icon: <i className='bx-bxs-circle' /> }}
-          menuSectionStyles={menuSectionStyles(verticalNavOptions, theme)}
-        >
-          <GenerateVerticalMenu menuData={menuData(dictionary)} />
-        </Menu> */}
     </ScrollWrapper>
   )
 }

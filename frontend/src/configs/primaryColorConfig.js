@@ -1,34 +1,34 @@
 // Primary color config object
 const primaryColorConfig = [
   {
-    name: 'primary-1',
-    light: '#8789FF',
-    main: '#696CFF',
-    dark: '#5E61E6'
+    name: 'primary-1', // Azul principal (Primária)
+    light: '#E6F2FF',
+    main: '#66B2FF',
+    dark: '#3385CC'
   },
   {
-    name: 'primary-2',
-    light: '#3DA8A9',
-    main: '#0D9394',
-    dark: '#0B8485'
+    name: 'primary-2', // Verde (Secundária)
+    light: '#E6FAF5',
+    main: '#66D9B3',
+    dark: '#33B388'
   },
   {
-    name: 'primary-3',
-    light: '#FFBB4A',
-    main: '#FFAB1D',
-    dark: '#E5991A'
+    name: 'primary-3', // Amarelo suave (atenção, destaque)
+    light: '#FFF9E6',
+    main: '#FFE066',
+    dark: '#CCB84D'
   },
   {
-    name: 'primary-4',
-    light: '#EF6382',
-    main: '#EB3D63',
-    dark: '#D33659'
+    name: 'primary-4', // Coral rosado (alertas, erros suaves)
+    light: '#FFEAEA',
+    main: '#FF9999',
+    dark: '#CC6666'
   },
   {
-    name: 'primary-5',
-    light: '#4CA7EF',
-    main: '#2092EC',
-    dark: '#1C83D4'
+    name: 'primary-5', // Azul-claro alternativo (apoio)
+    light: '#F0F8FF',
+    main: '#99CCFF',
+    dark: '#6699CC'
   }
 ]
 

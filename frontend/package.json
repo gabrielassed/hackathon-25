@@ -14,6 +14,8 @@
     "postinstall": "npm run build:icons"
   },
   "dependencies": {
+    "@emoji-mart/data": "^1.2.1",
+    "@emoji-mart/react": "^1.1.1",
     "@emotion/cache": "11.14.0",
     "@emotion/react": "11.14.0",
     "@emotion/styled": "11.14.0",
@@ -21,12 +23,15 @@
     "@mui/lab": "6.0.0-beta.19",
     "@mui/material": "6.2.1",
     "@mui/material-nextjs": "6.2.1",
+    "@reduxjs/toolkit": "^2.9.0",
+    "axios": "^1.12.2",
     "classnames": "2.5.1",
     "next": "15.1.2",
     "react": "18.3.1",
     "react-colorful": "5.6.1",
     "react-dom": "18.3.1",
     "react-perfect-scrollbar": "1.5.8",
+    "react-redux": "^9.2.0",
     "react-use": "17.6.0",
     "server-only": "0.0.1"
   },

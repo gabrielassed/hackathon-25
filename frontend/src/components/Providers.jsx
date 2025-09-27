@@ -1,9 +1,10 @@
 // Context Imports
-import { VerticalNavProvider } from '@menu/contexts/verticalNavContext'
-import { SettingsProvider } from '@core/contexts/settingsContext'
 import ThemeProvider from '@components/theme'
+import { SettingsProvider } from '@core/contexts/settingsContext'
+import { VerticalNavProvider } from '@menu/contexts/verticalNavContext'
 
 // Util Imports
+import ReduxProvider from '@/redux-store/ReduxProvider'
 import { getMode, getSettingsFromCookie, getSystemMode } from '@core/utils/serverHelpers'
 
 const Providers = async props => {
@@ -19,7 +20,7 @@ const Providers = async props => {
     <VerticalNavProvider>
       <SettingsProvider settingsCookie={settingsCookie} mode={mode}>
         <ThemeProvider direction={direction} systemMode={systemMode}>
-          {children}
+          <ReduxProvider>{children}</ReduxProvider>
         </ThemeProvider>
       </SettingsProvider>
     </VerticalNavProvider>
