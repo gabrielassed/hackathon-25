@@ -46,12 +46,7 @@ def file_upload():
 
         file.save(temp_file_path)
 
-        text = extract_text_native(temp_file_path)
-        is_any_text = any(bool(line.strip()) for line in text)
-
-        if not is_any_text:
-            # Tentar extrair imagens do PDF, e ler via oCR
-            text = extract_text_ocr(temp_file_path)
+        text = extract_text_ocr(temp_file_path)
 
         exams = match_exam(text)
 
@@ -61,8 +56,8 @@ def file_upload():
         string_exams = ''
         max_audit = 0
         protocol_number = str(randint(1000000, 9999999))
-        name_splited = text[2].split(':')
-        name_patient = name_splited[1].strip()
+        name_splited = text[2].split(':') if len(text) > 2 and ':' in text[2] else ['','Não encontrado']
+        name_patient = name_splited[1].strip() if len(name_splited) > 1 else 'Não encontrado'
 
         extra_ctx = """
             Você é um agente administrativo que processa pedidos de exames/procedimentos.
@@ -95,6 +90,9 @@ def file_upload():
 
         return jsonify({'text': text, 'exams': exams, 'answer': answer}), 200
     except Exception as e:
+        import traceback
+        traceback.print_exc()
+
         return {'error': str(e)}, 500
     
     finally:

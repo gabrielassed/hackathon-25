@@ -24,7 +24,7 @@ const FooterContent = () => {
         <span className='text-textSecondary'>{`© ${new Date().getFullYear()}, Feito com `}</span>
         <span>{`❤️`}</span>
         <span className='text-textSecondary'>{` por `}</span>
-        <Link href='https://themeselection.com' target='_blank' className='text-primary'>
+        <Link href='#' target='_blank' className='text-primary'>
           Drop Tables
         </Link>
       </p>
