@@ -56,6 +56,9 @@ const VerticalMenu = ({ scrollMenu }) => {
         <MenuItem href='/aura' icon={<i className='bx-chat' />}>
           Aura
         </MenuItem>
+        <MenuItem href='/context' icon={<i className='bx-file' />}>
+          Contexto
+        </MenuItem>
       </Menu>
     </ScrollWrapper>
   )
