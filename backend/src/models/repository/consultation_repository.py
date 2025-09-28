@@ -8,14 +8,16 @@ class ConsultationRepository:
 
     def insert_consultation(
         self,
-        doctor_id: int,
-        consultation_date: datetime
+        city: str,
+        speciality: str,
+        period: str
     ) -> None:
         with self.__db_connection as database:
             try:
                 consultation = ConsultationTable(
-                    doctor_id = doctor_id,
-                    consultation_date = consultation_date
+                    city = city,
+                    period = period,
+                    speciality = speciality
                 )
                 database.session.add(consultation)
                 database.session.commit()
@@ -23,10 +25,10 @@ class ConsultationRepository:
                 database.session.rollback()
                 raise exception
             
-    def list_consultations(self, doctor_id: int):
+    def list_consultations(self):
         with self.__db_connection as database:
             try:
-                consultations = database.session.query(ConsultationTable).all().filter(ConsultationTable.doctor_id == doctor_id)
+                consultations = database.session.query(ConsultationTable).all()
                 return consultations
             except Exception as exception:
                 raise exception

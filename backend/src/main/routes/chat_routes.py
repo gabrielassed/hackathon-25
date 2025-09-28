@@ -134,22 +134,17 @@ def save_context():
 @chat_bp.route('/consultation', methods=['POST'])
 def schedule_consultation():
     data = request.json
-    if "doctor_id" not in data or "consultation_date" not in data:
-        return jsonify({"error": "Campos 'doctor_id' e 'consultation_date' são obrigatórios"}), 400
 
     try:
-        doctor_id = int(data["doctor_id"])
-        consultation_date_str = data["consultation_date"]
-    except ValueError:
-        return jsonify({"error": "Campo 'doctor_id' deve ser um inteiro"}), 400
+        specialty = data["specialty"]
+        period = data["period"]
+        city = data["city"]
 
-    try:
-        consultation_date_obj = datetime.fromisoformat(consultation_date_str)  
-        consultation_repository.insert_consultation(doctor_id, consultation_date_obj)
+        consultation_repository.insert_consultation(city, period, specialty)
         return jsonify({
             "message": "Consulta agendada com sucesso!",
-            "doctor_id": doctor_id,
-            "data_agendamento": str(consultation_date_obj) # Enviando a string formatada
+            "specialty": specialty,
+            "data_agendamento": period # Enviando a string formatada
         }), 201
 
     except ValueError:

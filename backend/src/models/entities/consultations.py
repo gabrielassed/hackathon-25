@@ -1,14 +1,14 @@
-from datetime import date
-from src.models.entities import doctor
-from sqlalchemy import Column, DateTime, ForeignKey, Integer
+
+from sqlalchemy import Column, Integer, String
 from src.models.settings.base import Base
 
 class ConsultationTable(Base):
     __tablename__ = 'consultations'
-
+    
     consultation_id = Column(Integer, primary_key=True, autoincrement=True)
-    doctor_id = Column(Integer, ForeignKey(doctor.DoctorTable.doctor_id), primary_key=True)
-    consultation_date = Column(DateTime, nullable=False)
+    city = Column(String)
+    period = Column(String)
+    speciality = Column(String)
 
 
     def __repr__(self):
