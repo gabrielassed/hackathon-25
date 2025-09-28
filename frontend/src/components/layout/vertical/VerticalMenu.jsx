@@ -59,6 +59,12 @@ const VerticalMenu = ({ scrollMenu }) => {
         <MenuItem href='/context' icon={<i className='bx-file' />}>
           Contexto
         </MenuItem>
+        <MenuItem href='/exams' icon={<i className='bx-scan' />}>
+          Exames
+        </MenuItem>
+        <MenuItem href='/consultations' icon={<i className='bx-calendar' />}>
+          Consultas
+        </MenuItem>
       </Menu>
     </ScrollWrapper>
   )

@@ -180,7 +180,7 @@ export const uploadFileWithLLM = file => async dispatch => {
     dispatch(
       updateBotMessage({
         tempId,
-        newMessage: 'Não consegui processar o arquivo agora. Tente novamente.',
+        newMessage: 'Não consigo processar esse tipo de arquivo.',
         isError: true
       })
     )

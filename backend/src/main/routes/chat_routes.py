@@ -91,9 +91,9 @@ def file_upload():
                 max_audit = current_num
 
             exam_repository.insert_exam(protocol_number,exam_name,audit, name_patient, status)
-        ia_response = chat_controller.create_chat_response(string_exams +'\n Retorne uma mensagem verbalizando o nome de cada um dos exames no protocolo de número nº'+protocol_number+' e informando que o processo de auditoria será de'+str(max_audit)+' dias (se for 0 dias informar que é imediato)', extra_messages=[{"role": "system", "content": extra_ctx}])
+        answer, state = chat_controller.create_chat_response(string_exams +'\n Retorne uma mensagem verbalizando o nome de cada um dos exames no protocolo de número nº'+protocol_number+' e informando que o processo de auditoria será de'+str(max_audit)+' dias (se for 0 dias informar que é imediato)', extra_messages=[{"role": "system", "content": extra_ctx}])
 
-        return jsonify({'text': text, 'exams': exams, 'answer': ia_response}), 200
+        return jsonify({'text': text, 'exams': exams, 'answer': answer}), 200
     except Exception as e:
         return {'error': str(e)}, 500
     

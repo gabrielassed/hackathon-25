@@ -10,10 +10,14 @@ INTENTS = ["agendar_consulta", "geral"]
 SYSTEM_INTENT = (
     "Você é um classificador de intenção.\n"
     "Analise a ÚLTIMA mensagem do usuário considerando no máximo 10 mensagens de histórico.\n"
-    "Saída OBRIGATÓRIA: JSON válido exatamente assim: {\"intent\":\"agendar_consulta\"} ou {\"intent\":\"geral\"}.\n"
-    "Regra:\n"
+    "Saída OBRIGATÓRIA: JSON válido exatamente assim: {\"intent\":\"agendar_consulta\"} "
+    "ou {\"intent\":\"autorizar_exame\"} ou {\"intent\":\"geral\"}.\n"
+    "Regras:\n"
     "- Retorne \"agendar_consulta\" SOMENTE se a última mensagem indicar claramente agendamento de consulta "
     "(agendar, marcar, consulta, médico, doutor, especialidade, horário, data) ou se o histórico sinaliza esse fluxo.\n"
+    "- Retorne \"autorizar_exame\" se mencionar exame/procedimento e intenção de solicitar/autorizar/analisar/encaminhar "
+    "(ex.: solicitar exame, autorização de exame, aprovar exame, pedido de exame, guia TISS/TUSS, laudo, protocolo de autorização, "
+    "procedimento, auditoria de exame, liberar exame, autorização do convênio).\n"
     "- Caso contrário, retorne \"geral\".\n"
     "Não explique, não adicione campos além de \"intent\"."
 )
