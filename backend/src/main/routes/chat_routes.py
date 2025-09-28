@@ -62,9 +62,10 @@ def file_upload():
             audit = exam['audit']
             string_exams+= '\n'+exam_name
             current_num = 5 if audit == 'yes' else (10 if audit == 'opme' else 0)
+            status = 'Pendente, Aguardando Auditoria de 5 dias' if current_num == 0 else ('Pendente, Aguardando Auditoria de 10 dias' if audit=='opme' else 'Aprovado')
             if current_num > max_audit:
                 max_audit = current_num
-            exam_repository.insert_exam(protocol_number,exam_name,audit, name_patient)
+            exam_repository.insert_exam(protocol_number,exam_name,audit, name_patient, status)
         ia_response = chat_controller.create_chat_response(string_exams +'\n Retorne uma mensagem verbalizando o nome de cada um dos exames no protocolo de número nº'+protocol_number+' e informando que o processo de auditoria será de'+str(max_audit)+' dias (se for 0 dias informar que é imediato)')
 
         # Procurar pela chave 'audit' todos os niveis de auditoria pra ver qual será o tempo necessário
@@ -79,6 +80,8 @@ def file_upload():
     finally:
         if temp_file_path and os.path.exists(temp_file_path):
             os.remove(temp_file_path)
+
+
 
 @chat_bp.route('/context', methods=['GET'])
 def return_context():
