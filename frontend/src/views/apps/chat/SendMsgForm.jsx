@@ -17,7 +17,7 @@ import data from '@emoji-mart/data'
 import Picker from '@emoji-mart/react'
 
 // Slice Imports
-import { sendMsgWithLLM } from '@/redux-store/slices/chat'
+import { sendMsgWithLLM, uploadFileWithLLM } from '@/redux-store/slices/chat'
 
 // Component Imports
 import CustomIconButton from '@core/components/mui/IconButton'
@@ -93,6 +93,13 @@ const SendMsgForm = ({ dispatch, activeUser, isBelowSmScreen, messageInputRef })
     }
   }
 
+  const handleFileChange = e => {
+    const file = e.target.files?.[0]
+    if (!file) return
+    dispatch(uploadFileWithLLM(file))
+    e.target.value = ''
+  }
+
   const handleInputEndAdornment = () => {
     return (
       <div className='flex items-center gap-1'>
@@ -116,13 +123,10 @@ const SendMsgForm = ({ dispatch, activeUser, isBelowSmScreen, messageInputRef })
               >
                 <i className='bx-smile' />
               </MenuItem>
-              <MenuItem onClick={handleClose}>
-                <i className='bx-microphone' />
-              </MenuItem>
               <MenuItem onClick={handleClose} className='p-0'>
                 <label htmlFor='upload-img' className='plb-2 pli-4'>
                   <i className='bx-paperclip' />
-                  <input hidden type='file' id='upload-img' />
+                  <input hidden type='file' id='upload-img' onChange={handleFileChange} />
                 </label>
               </MenuItem>
             </Menu>
@@ -160,7 +164,7 @@ const SendMsgForm = ({ dispatch, activeUser, isBelowSmScreen, messageInputRef })
             />
             <IconButton component='label' htmlFor='upload-img'>
               <i className='bx-paperclip text-textPrimary' />
-              <input hidden type='file' id='upload-img' />
+              <input hidden type='file' id='upload-img' onChange={handleFileChange} />
             </IconButton>
           </>
         )}

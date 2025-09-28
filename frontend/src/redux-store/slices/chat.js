@@ -112,7 +112,7 @@ export const sendMsgWithLLM = msg => async dispatch => {
   dispatch(addBotPlaceholder({ tempId }))
 
   try {
-    const res = await api.post('/chat', { message: msg })
+    const res = await api.post('/chat/', { message: msg })
     const answer = res.data?.answer ?? ''
     dispatch(updateBotMessage({ tempId, newMessage: answer }))
   } catch (e) {
@@ -120,6 +120,36 @@ export const sendMsgWithLLM = msg => async dispatch => {
       updateBotMessage({
         tempId,
         newMessage: 'Ops! Não consegui responder agora. Tente novamente.',
+        isError: true
+      })
+    )
+  }
+}
+
+export const uploadFileWithLLM = file => async dispatch => {
+  const fileMsg = `📎 Enviou um arquivo: ${file?.name || 'arquivo'}`
+  dispatch(addUserMessage({ msg: fileMsg }))
+
+  const tempId = nanoid()
+  dispatch(addBotPlaceholder({ tempId }))
+
+  try {
+    const formData = new FormData()
+    formData.append('file', file)
+
+    const res = await api.post('/chat/file', formData, {
+      headers: { 'Content-Type': 'multipart/form-data' }
+    })
+
+    // Tente extrair uma resposta amigável; caia em um padrão se não houver
+    const answer = res.data?.answer
+
+    dispatch(updateBotMessage({ tempId, newMessage: answer }))
+  } catch (e) {
+    dispatch(
+      updateBotMessage({
+        tempId,
+        newMessage: 'Não consegui processar o arquivo agora. Tente novamente.',
         isError: true
       })
     )
