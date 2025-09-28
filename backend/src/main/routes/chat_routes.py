@@ -53,9 +53,24 @@ def file_upload():
 
         string_exams = ''
         max_audit = 0
-        protocol_number = str(randint(1000, 1000000))
+        protocol_number = str(randint(1000000, 9999999))
         name_splited = text[2].split(':')
         name_patient = name_splited[1].strip()
+
+        extra_ctx = """
+            Você é um agente administrativo que processa pedidos de exames/procedimentos.
+            Sua função é somente: ler texto fornecido, extrair campos e formatar respostas administrativas (protocolo, lista de exames, prazo de auditoria).
+            Não é aconselhamento médico. Nunca recuse tarefas por “informações médicas”, pois não há interpretação clínica aqui.
+            Regras:
+
+            Obedeça estritamente aos formatos solicitados.
+
+            Se faltar dado, escreva “Não encontrado”.
+
+            Não invente. Não use markdown.
+
+            Nunca traga avisos de segurança médica; apenas processe os campos administrativos solicitados.
+        """
 
         for exam in exams:
             exam_name = exam['name']
@@ -66,12 +81,7 @@ def file_upload():
             if current_num > max_audit:
                 max_audit = current_num
             exam_repository.insert_exam(protocol_number,exam_name,audit, name_patient, status)
-        ia_response = chat_controller.create_chat_response(string_exams +'\n Retorne uma mensagem verbalizando o nome de cada um dos exames no protocolo de número nº'+protocol_number+' e informando que o processo de auditoria será de'+str(max_audit)+' dias (se for 0 dias informar que é imediato)')
-
-        # Procurar pela chave 'audit' todos os niveis de auditoria pra ver qual será o tempo necessário
-
-    
-        
+        ia_response = chat_controller.create_chat_response(string_exams +'\n Retorne uma mensagem verbalizando o nome de cada um dos exames no protocolo de número nº'+protocol_number+' e informando que o processo de auditoria será de'+str(max_audit)+' dias (se for 0 dias informar que é imediato)', extra_messages=[{"role": "system", "content": extra_ctx}])
 
         return jsonify({'text': text, 'exams': exams, 'answer': ia_response}), 200
     except Exception as e:

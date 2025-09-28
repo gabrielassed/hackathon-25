@@ -1,10 +1,10 @@
 // React Imports
-import { useRef, useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 
 // MUI Imports
-import Typography from '@mui/material/Typography'
 import Avatar from '@mui/material/Avatar'
 import CardContent from '@mui/material/CardContent'
+import Typography from '@mui/material/Typography'
 
 // Third-party Imports
 import classnames from 'classnames'

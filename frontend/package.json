@@ -33,7 +33,8 @@
     "react-perfect-scrollbar": "1.5.8",
     "react-redux": "^9.2.0",
     "react-use": "17.6.0",
-    "server-only": "0.0.1"
+    "server-only": "0.0.1",
+    "showdown": "^2.1.0"
   },
   "devDependencies": {
     "@iconify/json": "2.2.286",
