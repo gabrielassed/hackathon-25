@@ -10,11 +10,10 @@ import styled from '@emotion/styled'
 import SneatLogo from '@core/svg/Logo'
 
 // Config Imports
-import themeConfig from '@configs/themeConfig'
 
 // Hook Imports
-import useVerticalNav from '@menu/hooks/useVerticalNav'
 import { useSettings } from '@core/hooks/useSettings'
+import useVerticalNav from '@menu/hooks/useVerticalNav'
 
 const LogoText = styled.span`
   color: ${({ color }) => color ?? 'var(--mui-palette-text-primary)'};
@@ -68,7 +67,7 @@ const Logo = ({ color }) => {
         transitionDuration={transitionDuration}
         isBreakpointReached={isBreakpointReached}
       >
-        {themeConfig.templateName}
+        Sasu Care
       </LogoText>
     </div>
   )

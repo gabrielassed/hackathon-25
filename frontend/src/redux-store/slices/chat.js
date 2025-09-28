@@ -130,7 +130,7 @@ export const sendMsgWithLLM = msg => async (dispatch, getState) => {
     const shouldBook = nextState?.intent === 'agendar_consulta' && allCollectedFilled(nextState?.collected)
 
     if (shouldBook) {
-      // await api.post('/chat/consultation', nextState.collected)
+      await api.post('/chat/consultation', nextState.collected)
 
       // ignora qualquer "answer" vindo do /chat e mostra a mensagem fixa
       dispatch(
