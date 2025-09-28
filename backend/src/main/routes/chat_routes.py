@@ -85,7 +85,7 @@ def file_upload():
             audit = exam['audit']
             string_exams+= '\n'+exam_name
             current_num = 5 if audit == 'yes' else (10 if audit == 'opme' else 0)
-            status = 'Pendente, Aguardando Auditoria de 5 dias' if current_num == 0 else ('Pendente, Aguardando Auditoria de 10 dias' if audit=='opme' else 'Aprovado')
+            status = 'Pendente, Aguardando Auditoria de 5 dias' if current_num == 5 else ('Pendente, Aguardando Auditoria de 10 dias' if audit=='opme' else 'Aprovado')
 
             if current_num > max_audit:
                 max_audit = current_num
