@@ -4,7 +4,7 @@ from sqlalchemy import Column, DateTime, ForeignKey, Integer
 from src.models.settings.base import Base
 
 class ConsultationTable(Base):
-    __tablename__ = 'consultation'
+    __tablename__ = 'consultations'
 
     consultation_id = Column(Integer, primary_key=True, autoincrement=True)
     doctor_id = Column(Integer, ForeignKey(doctor.DoctorTable.doctor_id), primary_key=True)

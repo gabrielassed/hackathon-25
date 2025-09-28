@@ -139,21 +139,22 @@ def schedule_consultation():
 
     try:
         doctor_id = int(data["doctor_id"])
-        consultation_date = data["consultation_date"]
+        consultation_date_str = data["consultation_date"]
     except ValueError:
         return jsonify({"error": "Campo 'doctor_id' deve ser um inteiro"}), 400
 
     try:
-        formato_brasileiro = "%d/%m/%Y %H:%M"
-        print(consultation_date)
-        consultation_date_obj = datetime.strptime(consultation_date, formato_brasileiro)        
-        consultation_repository.insert_consultation(doctor_id, consultation_date)
+        consultation_date_obj = datetime.fromisoformat(consultation_date_str)  
+        consultation_repository.insert_consultation(doctor_id, consultation_date_obj)
         return jsonify({
             "message": "Consulta agendada com sucesso!",
             "doctor_id": doctor_id,
-            "data_agendamento_br": str(consultation_date_obj) # Enviando a string formatada
+            "data_agendamento": str(consultation_date_obj) # Enviando a string formatada
         }), 201
 
+    except ValueError:
+        # Este erro agora pegaria um formato ISO inválido
+        return jsonify({"error": "Formato de data inválido. Use o formato ISO: YYYY-MM-DDTHH:MM:SS"}), 400
     except Exception as e:
         return jsonify({"error": str(e)}), 500
     
