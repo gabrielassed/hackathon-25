@@ -27,5 +27,13 @@ class ExamRepository:
             except Exception as exception:
                 database.session.rollback()
                 raise exception
+    
+    def list_exams(self):
+        with self.__db_connection as database:
+            try:
+                exams = database.session.query(ExamTable).all()
+                return exams
+            except Exception as exception:
+                raise exception
             
 exam_repository = ExamRepository(db_connection_handler)

@@ -5,7 +5,8 @@ from src.models.settings.base import Base
 class ExamTable(Base):
     __tablename__ = 'exam'
 
-    protocol_number = Column(Integer, primary_key=True)
+    exam_id = Column(Integer, primary_key=True, autoincrement=True)
+    protocol_number = Column(Integer)
     exam_type = Column(String)
     audit = Column(String)
     name = Column(String)

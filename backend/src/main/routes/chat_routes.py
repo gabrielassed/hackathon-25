@@ -101,7 +101,19 @@ def file_upload():
         if temp_file_path and os.path.exists(temp_file_path):
             os.remove(temp_file_path)
 
-
+@chat_bp.route('/exams', methods=['GET'])
+def get_exams():
+    list_exams = exam_repository.list_exams()
+    return jsonify({"exams": [
+        {
+            "exam_id": e.exam_id,
+            "protocol_number": e.protocol_number,
+            "exam_type": e.exam_type,
+            "audit": e.audit,
+            "name": e.name,
+            "status": e.status
+        } for e in list_exams
+    ]})
 
 @chat_bp.route('/context', methods=['GET'])
 def return_context():
@@ -157,10 +169,15 @@ def schedule_consultation():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
     
+
 @chat_bp.route('/consultation', methods=['GET'])
 def get_consultations():
-    data = request.json
-    doctor_id = data['doctor_id']
-
-    list_consultations = consultation_repository.list_consultations(doctor_id)
-    return jsonify({"consultations": list_consultations})
+    list_consultations = consultation_repository.list_consultations()
+    return jsonify({"consultations": [
+        {
+            "consultation_id": c.consultation_id,
+            "city": c.city,
+            "speciality": c.speciality,
+            "period": c.period
+        } for c in list_consultations
+    ]})
