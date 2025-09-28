@@ -4,6 +4,7 @@ from flask import Blueprint, request, jsonify
 import tempfile
 import os
 from random import randint
+from datetime import datetime
 
 from src.controller.chat_controller import chat_controller
 from src.main.http_types.http_request import HttpRequest
@@ -75,13 +76,16 @@ def file_upload():
         """
 
         for exam in exams:
+
             exam_name = exam['name']
             audit = exam['audit']
             string_exams+= '\n'+exam_name
             current_num = 5 if audit == 'yes' else (10 if audit == 'opme' else 0)
             status = 'Pendente, Aguardando Auditoria de 5 dias' if current_num == 0 else ('Pendente, Aguardando Auditoria de 10 dias' if audit=='opme' else 'Aprovado')
+
             if current_num > max_audit:
                 max_audit = current_num
+
             exam_repository.insert_exam(protocol_number,exam_name,audit, name_patient, status)
         ia_response = chat_controller.create_chat_response(string_exams +'\n Retorne uma mensagem verbalizando o nome de cada um dos exames no protocolo de número nº'+protocol_number+' e informando que o processo de auditoria será de'+str(max_audit)+' dias (se for 0 dias informar que é imediato)', extra_messages=[{"role": "system", "content": extra_ctx}])
 
@@ -140,8 +144,16 @@ def schedule_consultation():
         return jsonify({"error": "Campo 'doctor_id' deve ser um inteiro"}), 400
 
     try:
+        formato_brasileiro = "%d/%m/%Y %H:%M"
+        print(consultation_date)
+        consultation_date_obj = datetime.strptime(consultation_date, formato_brasileiro)        
         consultation_repository.insert_consultation(doctor_id, consultation_date)
-        return jsonify({"success": True, "message": "Consulta agendada com sucesso"})
+        return jsonify({
+            "message": "Consulta agendada com sucesso!",
+            "doctor_id": doctor_id,
+            "data_agendamento_br": str(consultation_date_obj) # Enviando a string formatada
+        }), 201
+
     except Exception as e:
         return jsonify({"error": str(e)}), 500
     
