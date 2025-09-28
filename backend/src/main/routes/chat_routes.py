@@ -20,12 +20,16 @@ def chat():
     http_request = HttpRequest(body=request.json)
     body = http_request.body 
     prompt = body['message']
+    history = body.get('history', [])
     if not prompt:
         return jsonify({"error": "message é obrigatório"}), 400
     
-    chat_response = chat_controller.create_chat_response(prompt)
+    answer, state = chat_controller.create_chat_response(
+        prompt,
+        extra_messages=history
+    )
 
-    return jsonify({"answer": chat_response})
+    return jsonify({"answer": answer, 'state': state}), 200
 
 @chat_bp.route('/file', methods=['POST'])
 def file_upload():

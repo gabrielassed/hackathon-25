@@ -5,6 +5,9 @@ import { createSlice, nanoid } from '@reduxjs/toolkit'
 import api from '@/api'
 import { db } from '@/fake-db/apps/chat'
 
+const isFilled = v => v !== null && v !== undefined && String(v).trim() !== ''
+const allCollectedFilled = collected => collected && Object.values(collected).every(isFilled)
+
 const moveActiveChatToTop = state => {
   state.chats = state.chats.filter(c => c.userId !== state.activeUser?.id)
   const existing = state.chats.find(c => c.userId === state.activeUser?.id)
@@ -83,7 +86,7 @@ const chatSlice = createSlice({
 
     // 3) Atualiza o placeholder com resposta/erro
     updateBotMessage: (state, action) => {
-      const { tempId, newMessage, isError = false } = action.payload
+      const { tempId, newMessage, isError = false, nextAction = null } = action.payload
       const existingChat = state.chats.find(chat => chat.userId === state.activeUser?.id)
       if (!existingChat) return
 
@@ -98,12 +101,15 @@ const chatSlice = createSlice({
 
       state.chats = state.chats.filter(c => c.userId !== state.activeUser?.id)
       state.chats.unshift(existingChat)
+      state.nextAction = nextAction
     }
   }
 })
 
 // --- Thunk que encadeia tudo: usuário -> placeholder -> API -> update ---
-export const sendMsgWithLLM = msg => async dispatch => {
+export const sendMsgWithLLM = msg => async (dispatch, getState) => {
+  const state = getState().chatReducer.chats[0].chat
+
   // adiciona mensagem do usuário
   dispatch(addUserMessage({ msg }))
 
@@ -112,15 +118,40 @@ export const sendMsgWithLLM = msg => async dispatch => {
   dispatch(addBotPlaceholder({ tempId }))
 
   try {
-    const res = await api.post('/chat/', { message: msg })
-    const answer = res.data?.answer ?? ''
-    dispatch(updateBotMessage({ tempId, newMessage: answer }))
+    const stateAll = getState().chatReducer.chats[0].chat
+    const lastMsgs = stateAll.map(m => ({
+      role: m.senderId === getState().chatReducer.profileUser.id ? 'user' : 'assistant',
+      content: m.message
+    }))
+
+    const res = await api.post('/chat/', { message: msg, history: lastMsgs })
+
+    const nextState = res.data?.state ?? null
+    const shouldBook = nextState?.intent === 'agendar_consulta' && allCollectedFilled(nextState?.collected)
+
+    if (shouldBook) {
+      // await api.post('/chat/consultation', nextState.collected)
+
+      // ignora qualquer "answer" vindo do /chat e mostra a mensagem fixa
+      dispatch(
+        updateBotMessage({
+          tempId,
+          newMessage: 'Consulta agendada com sucesso!',
+          nextAction: nextState
+        })
+      )
+    } else {
+      const answer = res.data?.answer ?? ''
+      dispatch(updateBotMessage({ tempId, newMessage: answer, nextAction: nextState }))
+    }
   } catch (e) {
+    console.error(e)
     dispatch(
       updateBotMessage({
         tempId,
         newMessage: 'Ops! Não consegui responder agora. Tente novamente.',
-        isError: true
+        isError: true,
+        nextAction: null
       })
     )
   }
