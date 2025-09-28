@@ -1,4 +1,5 @@
 # app/controllers/chat_controller.py
+from pydoc import doc
 from flask import Blueprint, request, jsonify
 import tempfile
 import os
@@ -9,6 +10,7 @@ from src.main.http_types.http_request import HttpRequest
 from src.integrations.tesseract import extract_text_native, extract_text_ocr
 from src.integrations.find_exam import match_exam
 from src.models.repository.exam_repository import exam_repository
+from src.models.repository.consultation_repository import consultation_repository
 
 chat_bp = Blueprint("chat", __name__, url_prefix="/chat")
 
@@ -123,3 +125,30 @@ def save_context():
         f.write(data["context"])
 
     return jsonify({"success": True, "message": "Contexto salvo com sucesso"})
+
+
+@chat_bp.route('/consultation', methods=['POST'])
+def schedule_consultation():
+    data = request.json
+    if "doctor_id" not in data or "consultation_date" not in data:
+        return jsonify({"error": "Campos 'doctor_id' e 'consultation_date' são obrigatórios"}), 400
+
+    try:
+        doctor_id = int(data["doctor_id"])
+        consultation_date = data["consultation_date"]
+    except ValueError:
+        return jsonify({"error": "Campo 'doctor_id' deve ser um inteiro"}), 400
+
+    try:
+        consultation_repository.insert_consultation(doctor_id, consultation_date)
+        return jsonify({"success": True, "message": "Consulta agendada com sucesso"})
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+    
+@chat_bp.route('/consultation', methods=['GET'])
+def get_consultations():
+    data = request.json
+    doctor_id = data['doctor_id']
+
+    list_consultations = consultation_repository.list_consultations(doctor_id)
+    return jsonify({"consultations": list_consultations})
